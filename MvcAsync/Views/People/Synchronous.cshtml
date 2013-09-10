@@ -1,0 +1,34 @@
+﻿@using MvcAsync.Models
+@model IEnumerable<Person>
+@{
+    ViewBag.Title = "Synchronous"; 
+}
+
+<h2>Synchronous</h2>
+
+<table class="table table-striped table-hover">
+    <thead>
+        <tr>
+            <th>First</th>
+            <th>Last</th>
+            <th>Role</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Person p in Model)
+        {             
+            <tr>
+                <td>@p.FirstName</td>
+                <td>@p.LastName</td>
+                <td>@p.Role</td>
+            </tr>                         
+        }
+    </tbody>
+</table>
+@using (Html.BeginForm())
+{     
+    <div>
+        @Html.DropDownList("selectedRole", new SelectList(new[] { "All" }.Concat(Enum.GetNames(typeof(Role)))))
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </div> 
+}

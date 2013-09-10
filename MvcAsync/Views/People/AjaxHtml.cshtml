@@ -1,0 +1,33 @@
+﻿@using MvcAsync.Models
+@model string
+@{
+    ViewBag.Title = "Unobtrusive AJAX";
+    var ajaxOptions = new AjaxOptions { UpdateTargetId = "tableBody" };
+}
+
+<h2>Unobtrusive AJAX</h2>
+<table class="table table-striped table-hover">
+    <thead>
+        <tr>
+            <th>First</th>
+            <th>Last</th>
+            <th>Role</th>
+        </tr>
+    </thead>
+    <tbody id="tableBody">
+        @Html.Action("Partial", new { selectedRole = Model })
+    </tbody>
+</table>
+
+@using (Ajax.BeginForm("Partial", ajaxOptions))
+{
+    <div>
+        @Html.DropDownList("selectedRole", new SelectList(new[] { "All" }.Concat(Enum.GetNames(typeof(Role)))))
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+}
+
+@section Scripts
+{
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+}
