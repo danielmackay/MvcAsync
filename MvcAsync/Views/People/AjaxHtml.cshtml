@@ -27,6 +27,17 @@
     </div>
 }
 
+<div>
+    @foreach (string role in Enum.GetNames(typeof(Role)))
+    {
+        <div class="ajaxLink">
+            @Ajax.ActionLink(role, "Partial", new { selectedRole = role }, new AjaxOptions { UpdateTargetId = "tableBody" })
+        </div>
+    }
+</div>
+
+
+
 @section Scripts
 {
     <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>

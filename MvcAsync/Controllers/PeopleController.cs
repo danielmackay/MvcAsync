@@ -31,7 +31,7 @@ namespace MvcAsync.Controllers
 
         public JsonResult Json(string selectedRole = "All")
         {
-            return Json(GetPeople(selectedRole));
+            return Json(GetPeople(selectedRole), JsonRequestBehavior.AllowGet);
         }
 
         public ViewResult jQuery()
