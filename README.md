@@ -7,6 +7,7 @@ Goals
 -----
 * **Minimal Requests:** This means that the data will always come down with the inital page load. This could the data could either be HTML or JSON.  In the case of JSON it is embedded in the page and then used to construct the HTML on the client.
 * **Logic-less Views:** This means that any calculations are done in C# and store in ViewModels.  These ViewModels are then bound to the views (server-side) to produce the initial HTML.
+* **Like-for-like comparison:** Every technique should be functionality equivalent .
 
 Project Setup
 -------------
@@ -20,11 +21,24 @@ Techniques
 ###HTML
 *pros*
 
+- quickest and easiest to implement
+
 *cons*
+
+- Most data sent over wire.
+- Entire page has to reload which blocks the user from doing anything else.
+- Slowest
+
 ###Unobtrusive AJAX
 *pros*
 
+- Asynchronous.
+- Only HTML that needs to be changed is updated
+- Simple to implement
+
 *cons*
+- Server sends HTML.  More data sent than needed.
+
 ###jQuery
 *pros*
 
@@ -43,4 +57,5 @@ Techniques
 *cons*
 
 Summary
-------
+-------
+todo...
