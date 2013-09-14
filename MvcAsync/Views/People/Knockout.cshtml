@@ -1,5 +1,5 @@
 ﻿@using MvcAsync.Models
-@model string
+@model PeopleViewModel
 @{
     ViewBag.Title = "Knockout AJAX";
 }
@@ -23,24 +23,20 @@
 </table>
 
 <div>
-    @Html.DropDownList("selectedRole", new SelectList(new[] { "All" }.Concat(Enum.GetNames(typeof(Role)))), new { id = "selectedRole" })
-    <button id="ajaxbutton" class="btn btn-primary" data-bind="click: submit" data-url="@Url.Action("json")">Submit</button>
+    <select id="selectedRole" name="selectedRole" data-bind="options: roles, value: selectedRole"></select>
+    <button id="ajaxbutton" class="btn btn-primary" data-bind="click: submit">Submit</button>
 </div>
 
 <div>
-    @*@foreach (string role in Enum.GetNames(typeof(Role)))
-        {
-            <div class="ajaxLink">
-                @Ajax.ActionLink(role, "Json", new { selectedRole = role }, ajaxOptions)
-            </div>
-    }*@
+    <ul data-bind="foreach: roles">
+        <li><a href="#" data-bind="text: $data, click: $root.filter"></a></li>
+    </ul>
 </div>
 
 @section Scripts
 {
     <script src="~/Scripts/knockout-2.3.0.debug.js"></script>
     <script type="text/javascript">
-        // Overall viewmodel for this screen, along with initial state
         function Person(data) {
             this.firstName = ko.observable(data.FirstName);
             this.lastName = ko.observable(data.LastName);
@@ -51,17 +47,29 @@
             // Data
             var self = this;
             self.people = ko.observableArray([]);
+            self.roles = ko.observable(JSON.parse('@Html.Raw(Model.RolesJson)'));
+            self.selectedRole = ko.observable(self.roles()[0]);
+            self.dataUrl = '@Model.JsonDataUrl';
 
             // Operations
             self.submit = function () {
-                var role = $('#selectedRole').val();
-                var data = $('#ajaxbutton').data('url');
-                var url = data + '?selectedRole=' + role;
+                self.update(self.GetUrl(self.selectedRole()));
+            };
+
+            self.filter = function (data, event) {
+                self.update(self.GetUrl(event.target.text));
+            }
+
+            self.update = function (url) {
                 $.getJSON(url, function (allData) {
                     var mappedPeople = $.map(allData, function (item) { return new Person(item) });
                     self.people(mappedPeople);
                 });
             };
+
+            self.GetUrl = function (selectedRole) {
+                return self.dataUrl + '?selectedRole=' + selectedRole;
+            }
 
             self.init = function () {
                 self.submit();

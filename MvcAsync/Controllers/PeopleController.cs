@@ -46,7 +46,7 @@ namespace MvcAsync.Controllers
 
         public ActionResult Knockout()
         {
-            return View();
+            return View(GetVm());
         }
 
         public ActionResult Angular()
@@ -63,6 +63,17 @@ namespace MvcAsync.Controllers
                 data = data.Where(p => p.Role == selected);
             }
             return data;
+        }
+
+        private PeopleViewModel GetVm()
+        {
+            var roles = Enum.GetNames(typeof(Role)).ToList();
+            return new PeopleViewModel
+            {
+                Roles = roles,
+                SelectedRole = roles[0],
+                JsonDataUrl =  Url.Action("json")
+            };
         }
     }
 }
