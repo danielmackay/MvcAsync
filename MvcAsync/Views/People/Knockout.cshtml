@@ -1,5 +1,5 @@
 ﻿@using MvcAsync.Models
-@model PeopleViewModel
+@model RolesViewModel
 @{
     ViewBag.Title = "Knockout AJAX";
 }
@@ -23,6 +23,7 @@
 </table>
 
 <div>
+    <p>@Model.RolesJson</p>
     <select id="selectedRole" name="selectedRole" data-bind="options: roles, value: selectedRole"></select>
     <button id="ajaxbutton" class="btn btn-primary" data-bind="click: submit">Submit</button>
 </div>

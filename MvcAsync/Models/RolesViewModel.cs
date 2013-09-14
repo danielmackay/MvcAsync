@@ -6,9 +6,10 @@ using System.Web;
 
 namespace MvcAsync.Models
 {
-    public class PeopleViewModel
+    public class RolesViewModel
     {
-        public List<string> Roles { set; private get; }
+        public List<string> Roles { set; get; }
+
         public string RolesJson
         {
             get
@@ -16,8 +17,15 @@ namespace MvcAsync.Models
                 return JsonConvert.SerializeObject(Roles);
             }
         }
+
         public string SelectedRole { get; set; }
 
         public string JsonDataUrl { get; set; }
+    }
+
+    public class PeopleViewModel
+    {
+        public IEnumerable<Person> People { get; set; }
+        public List<string> Roles { set; get; }
     }
 }

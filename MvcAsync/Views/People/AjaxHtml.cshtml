@@ -1,11 +1,12 @@
 ﻿@using MvcAsync.Models
-@model string
+@model RolesViewModel
 @{
     ViewBag.Title = "Unobtrusive AJAX";
     var ajaxOptions = new AjaxOptions { UpdateTargetId = "tableBody" };
 }
 
 <h2>Unobtrusive AJAX</h2>
+
 <table class="table table-striped table-hover">
     <thead>
         <tr>
@@ -15,28 +16,26 @@
         </tr>
     </thead>
     <tbody id="tableBody">
-        @Html.Action("Partial", new { selectedRole = Model })
+        @Html.Action("Partial", new { selectedRole = Model.SelectedRole })
     </tbody>
 </table>
 
 @using (Ajax.BeginForm("Partial", ajaxOptions))
 {
     <div>
-        @Html.DropDownList("selectedRole", new SelectList(new[] { "All" }.Concat(Enum.GetNames(typeof(Role)))))
+        @Html.DropDownList("selectedRole", new SelectList(Model.Roles))
         <button type="submit" class="btn btn-primary">Submit</button>
     </div>
 }
 
-<div>
-    @foreach (string role in Enum.GetNames(typeof(Role)))
+<ul>
+    @foreach (string role in Model.Roles)
     {
-        <div class="ajaxLink">
+        <li>
             @Ajax.ActionLink(role, "Partial", new { selectedRole = role }, new AjaxOptions { UpdateTargetId = "tableBody" })
-        </div>
+        </li>
     }
-</div>
-
-
+</ul>
 
 @section Scripts
 {

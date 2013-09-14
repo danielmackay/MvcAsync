@@ -13,7 +13,9 @@ namespace MvcAsync.Controllers
         #region Synchronous
         public ActionResult Synchronous(string selectedRole = "All")
         {
-            return View(GetPeople(selectedRole));
+            var vm = GetPeopleVm();
+            vm.People = GetPeople(selectedRole);
+            return View(vm);
         }
         #endregion
 
@@ -25,7 +27,8 @@ namespace MvcAsync.Controllers
 
         public ActionResult AjaxHtml(string selectedRole = "All")
         {
-            return View((object)selectedRole);
+            var vm = GetRolesVm();
+            return View(vm);
         }
         #endregion
 
@@ -46,7 +49,7 @@ namespace MvcAsync.Controllers
 
         public ActionResult Knockout()
         {
-            return View(GetVm());
+            return View(GetRolesVm());
         }
 
         public ActionResult Angular()
@@ -65,14 +68,22 @@ namespace MvcAsync.Controllers
             return data;
         }
 
-        private PeopleViewModel GetVm()
+        private RolesViewModel GetRolesVm()
         {
-            var roles = Enum.GetNames(typeof(Role)).ToList();
-            return new PeopleViewModel
+            var roles = new RolesRepository().GetAll();
+            return new RolesViewModel
             {
                 Roles = roles,
                 SelectedRole = roles[0],
                 JsonDataUrl =  Url.Action("json")
+            };
+        }
+
+        private PeopleViewModel GetPeopleVm()
+        {
+            return new PeopleViewModel
+            {
+                Roles = new RolesRepository().GetAll()
             };
         }
     }

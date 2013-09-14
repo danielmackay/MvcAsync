@@ -10,7 +10,8 @@
 
 }
 
-@* TODO: Remove Ajax helper*@
+@*TODO: Use viewmodel*@
+
 <h2>jQuery AJAX</h2>
 <table class="table table-striped table-hover">
     <thead>
@@ -23,6 +24,9 @@
     <tbody id="tableBody"></tbody>
 </table>
 
+@* TODO: Remove Ajax helper
+    - This needs tidying up.  Perhaps split out into jQuery with AJAX helpers and pure jQuery?
+    *@
 @using (Ajax.BeginForm("Json", ajaxOptions))
 {
     <div>
@@ -47,20 +51,21 @@
         function processData(data) {
             var target = $("#tableBody");
             target.empty();
+            var tableBody = '';
             for (var i = 0; i < data.length; i++) {
                 var person = data[i];
-                target.append("<tr><td>" + person.FirstName + "</td><td>" + person.LastName + "</td><td>" + person.Role + "</td></tr>");
+                tableBody = tableBody + "<tr><td>" + person.FirstName + "</td><td>" + person.LastName + "</td><td>" + person.Role + "</td></tr>";
             }
+            target.append(tableBody);
         }
 
         $(function () {
             var req = $.ajax({
-                type: "GET",//or "POST" or whatever
+                type: "GET",
                 url: '@Url.Action("Json")'
             }).success(function (responseData) {
                 processData(responseData);
             });
         });
     </script>
-
 }
