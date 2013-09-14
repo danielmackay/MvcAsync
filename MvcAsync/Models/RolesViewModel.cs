@@ -27,5 +27,7 @@ namespace MvcAsync.Models
     {
         public IEnumerable<Person> People { get; set; }
         public List<string> Roles { set; get; }
+
+        public string PeopleJson { get { return JsonConvert.SerializeObject(People); } }
     }
 }

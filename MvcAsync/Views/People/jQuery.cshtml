@@ -1,5 +1,5 @@
 ﻿@using MvcAsync.Models
-@model string
+@model PeopleViewModel
 @{
     ViewBag.Title = "jQuery AJAX";
     var ajaxOptions = new AjaxOptions
@@ -9,8 +9,6 @@
     };
 
 }
-
-@*TODO: Use viewmodel*@
 
 <h2>jQuery AJAX</h2>
 <table class="table table-striped table-hover">
@@ -26,23 +24,23 @@
 
 @* TODO: Remove Ajax helper
     - This needs tidying up.  Perhaps split out into jQuery with AJAX helpers and pure jQuery?
-    *@
+*@
 @using (Ajax.BeginForm("Json", ajaxOptions))
 {
     <div>
-        @Html.DropDownList("selectedRole", new SelectList(new[] { "All" }.Concat(Enum.GetNames(typeof(Role)))))
+        @Html.DropDownList("selectedRole", new SelectList(Model.Roles)))
         <button type="submit" class="btn btn-primary">Submit</button>
     </div>
 }
 
-<div>
-    @foreach (string role in Enum.GetNames(typeof(Role)))
+<ul>
+    @foreach (string role in Model.Roles)
     {
-        <div class="ajaxLink">
+        <li>
             @Ajax.ActionLink(role, "Json", new { selectedRole = role }, ajaxOptions)
-        </div>
+        </li>
     }
-</div>
+</ul>
 
 @section Scripts
 {
@@ -60,12 +58,13 @@
         }
 
         $(function () {
-            var req = $.ajax({
+            @*var req = $.ajax({
                 type: "GET",
                 url: '@Url.Action("Json")'
             }).success(function (responseData) {
                 processData(responseData);
-            });
+            });*@
+            processData(JSON.parse('@Html.Raw(@Model.PeopleJson)'));
         });
     </script>
 }

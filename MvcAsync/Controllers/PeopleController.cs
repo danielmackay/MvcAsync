@@ -13,9 +13,7 @@ namespace MvcAsync.Controllers
         #region Synchronous
         public ActionResult Synchronous(string selectedRole = "All")
         {
-            var vm = GetPeopleVm();
-            vm.People = GetPeople(selectedRole);
-            return View(vm);
+            return View(GetPeopleVm(selectedRole));
         }
         #endregion
 
@@ -27,8 +25,7 @@ namespace MvcAsync.Controllers
 
         public ActionResult AjaxHtml(string selectedRole = "All")
         {
-            var vm = GetRolesVm();
-            return View(vm);
+            return View(GetRolesVm());
         }
         #endregion
 
@@ -37,9 +34,9 @@ namespace MvcAsync.Controllers
             return Json(GetPeople(selectedRole), JsonRequestBehavior.AllowGet);
         }
 
-        public ViewResult jQuery()
+        public ViewResult jQuery(string selectedRole = "All")
         {
-            return View();
+            return View(GetPeopleVm(selectedRole));
         }
 
         public ViewResult Handlebars()
@@ -79,11 +76,12 @@ namespace MvcAsync.Controllers
             };
         }
 
-        private PeopleViewModel GetPeopleVm()
+        private PeopleViewModel GetPeopleVm(string selectedRole)
         {
             return new PeopleViewModel
             {
-                Roles = new RolesRepository().GetAll()
+                Roles = new RolesRepository().GetAll(),
+                People = GetPeople(selectedRole)
             };
         }
     }
