@@ -1,6 +1,115 @@
-﻿@{
-    Layout = "~/Views/Shared/_Layout.cshtml";
+﻿@using MvcAsync.Models
+@model PeopleViewModel
+@{
+    ViewBag.Title = "Handlebars AJAX";
 }
 
-<h2>Handlebars</h2>
+<h2>Handlebars AJAX</h2>
+<table class="table table-striped table-hover">
+    <thead>
+        <tr>
+            <th>First</th>
+            <th>Last</th>
+            <th>Role</th>
+        </tr>
+    </thead>
+    <tbody id="peopleTable">
+    </tbody>
+</table>
 
+<div>
+    <select id="selectedRole" name="selectedRole"></select>
+    <button class="btn btn-primary">Submit</button>
+</div>
+
+<div>
+    <ul id="roleLinks"></ul>
+</div>
+
+@*TODO: Get ajax working for submit button and links.  Remove uneeded functtions from VM and tidy up*@
+
+@section Scripts
+{
+    <script src="~/Scripts/handlebars.js"></script>
+
+    <script id="people-template" type="text/x-handlebars-template">
+        {{#each people}}
+        <tr>
+            <td>{{firstName}}</td>
+            <td>{{lastName}}</td>
+            <td>{{role}}</td>
+        </tr>
+        {{/each}}
+    </script>
+    <script id="role-links-template" type="text/x-handlebars-template">
+        {{#each roles}}
+        <li><a href="#">{{this}}</a></li>
+        {{/each}}
+    </script>
+    <script id="role-select-template" type="text/x-handlebars-template">
+        {{#each roles}}
+        <option value="{{this}}">{{this}}</option>
+        {{/each}}
+    </script>
+
+    <script type="text/javascript">
+        var source = $("#role-links-template").html();
+        var roleLinksTemplate = Handlebars.compile(source);
+
+        var source = $("#people-template").html();
+        var peopleTemplate = Handlebars.compile(source);
+
+        var source = $("#role-select-template").html();
+        var selectedRoleTemplate = Handlebars.compile(source);
+
+        function Person(data) {
+            this.firstName = data.FirstName;
+            this.lastName = data.LastName;
+            this.role = data.Role;
+        }
+
+        function PeopleViewModel() {
+            // Data
+            var self = this;
+            self.people = [];
+            self.roles = JSON.parse('@Html.Raw(Model.RolesJson)');
+            self.selectedRole = self.roles[0];
+            self.dataUrl = '@Model.JsonDataUrl';
+
+            // Operations
+            self.submit = function () {
+                update(GetUrl(self.selectedRole));
+            };
+
+            self.filter = function (data, event) {
+                update(GetUrl(event.target.text));
+            }
+
+            // Helpers
+            var update = function (url) {
+                $.getJSON(url, processPeople);
+            };
+
+            var GetUrl = function (selectedRole) {
+                return self.dataUrl + '?selectedRole=' + selectedRole;
+            }
+
+            var processPeople = function (data) {
+                var mappedPeople = $.map(data, function (item) { return new Person(item) });
+                self.people = mappedPeople;
+            }
+
+            var init = function () {
+                processPeople(JSON.parse('@Html.Raw(Model.PeopleJson)'));
+            }
+
+            init();
+        };
+
+        var vm = new PeopleViewModel();
+        $('#roleLinks').html(roleLinksTemplate(vm));
+        $('#selectedRole').html(selectedRoleTemplate(vm));
+        $('#peopleTable').html(peopleTemplate(vm));
+
+    </script>
+}

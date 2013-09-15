@@ -44,9 +44,9 @@ namespace MvcAsync.Controllers
             return View(GetPeopleVm(selectedRole));
         }
 
-        public ViewResult Handlebars()
+        public ViewResult Handlebars(string selectedRole = "All")
         {
-            return View();
+            return View(GetPeopleVm(selectedRole));
         }
 
         public ActionResult Angular()
