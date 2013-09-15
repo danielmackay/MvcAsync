@@ -28,6 +28,18 @@ namespace MvcAsync.Models
         public IEnumerable<Person> People { get; set; }
         public List<string> Roles { set; get; }
 
+        public string RolesJson
+        {
+            get
+            {
+                return JsonConvert.SerializeObject(Roles);
+            }
+        }
+
+        public string JsonDataUrl { get; set; }
+
+        public string SelectedRole { get; set; }
+
         public string PeopleJson { get { return JsonConvert.SerializeObject(People); } }
     }
 }

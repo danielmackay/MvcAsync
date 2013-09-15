@@ -29,12 +29,17 @@ namespace MvcAsync.Controllers
         }
         #endregion
 
-        public JsonResult Json(string selectedRole = "All")
+        public ViewResult jQueryUnobtrusive(string selectedRole = "All")
         {
-            return Json(GetPeople(selectedRole), JsonRequestBehavior.AllowGet);
+            return View(GetPeopleVm(selectedRole));
         }
 
         public ViewResult jQuery(string selectedRole = "All")
+        {
+            return View(GetPeopleVm(selectedRole));
+        }
+
+        public ActionResult Knockout(string selectedRole = "All")
         {
             return View(GetPeopleVm(selectedRole));
         }
@@ -44,14 +49,14 @@ namespace MvcAsync.Controllers
             return View();
         }
 
-        public ActionResult Knockout()
-        {
-            return View(GetRolesVm());
-        }
-
         public ActionResult Angular()
         {
             return View();
+        }
+
+        public JsonResult Json(string selectedRole = "All")
+        {
+            return Json(GetPeople(selectedRole), JsonRequestBehavior.AllowGet);
         }
 
         private IEnumerable<Person> GetPeople(string selectedRole)
@@ -72,7 +77,7 @@ namespace MvcAsync.Controllers
             {
                 Roles = roles,
                 SelectedRole = roles[0],
-                JsonDataUrl =  Url.Action("json")
+                JsonDataUrl = Url.Action("json")
             };
         }
 
@@ -81,7 +86,8 @@ namespace MvcAsync.Controllers
             return new PeopleViewModel
             {
                 Roles = new RolesRepository().GetAll(),
-                People = GetPeople(selectedRole)
+                People = GetPeople(selectedRole),
+                JsonDataUrl = Url.Action("json")
             };
         }
     }

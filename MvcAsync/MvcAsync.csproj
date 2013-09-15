@@ -213,6 +213,7 @@
     <Content Include="Views\People\Handlebars.cshtml" />
     <Content Include="Views\People\Knockout.cshtml" />
     <Content Include="Views\People\Angular.cshtml" />
+    <Content Include="Views\People\jQueryUnobtrusive.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

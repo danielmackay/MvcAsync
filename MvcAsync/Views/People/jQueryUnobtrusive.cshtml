@@ -1,0 +1,60 @@
+﻿@using MvcAsync.Models
+@model PeopleViewModel
+@{
+    ViewBag.Title = "jQuery Unobtrusive AJAX";
+    var ajaxOptions = new AjaxOptions
+    {
+        Url = Model.JsonDataUrl,
+        OnSuccess = "processData"
+    };
+}
+
+<h2>jQuery Unobtrusive AJAX</h2>
+<table class="table table-striped table-hover">
+    <thead>
+        <tr>
+            <th>First</th>
+            <th>Last</th>
+            <th>Role</th>
+        </tr>
+    </thead>
+    <tbody id="tableBody"></tbody>
+</table>
+
+@using (Ajax.BeginForm("Json", ajaxOptions))
+{
+    <div>
+        @Html.DropDownList("selectedRole", new SelectList(Model.Roles)))
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+}
+
+<ul>
+    @foreach (string role in Model.Roles)
+    {
+        <li>
+            @Ajax.ActionLink(role, "Json", new { selectedRole = role }, ajaxOptions)
+        </li>
+    }
+</ul>
+
+@section Scripts
+{
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+    <script type="text/javascript">
+        function processData(data) {
+            var target = $("#tableBody");
+            target.empty();
+            var tableBody = '';
+            for (var i = 0; i < data.length; i++) {
+                var person = data[i];
+                tableBody = tableBody + "<tr><td>" + person.FirstName + "</td><td>" + person.LastName + "</td><td>" + person.Role + "</td></tr>";
+            }
+            target.append(tableBody);
+        }
+
+        $(function () {
+            processData(JSON.parse('@Html.Raw(@Model.PeopleJson)'));
+        });
+    </script>
+}

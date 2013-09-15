@@ -2,12 +2,6 @@
 @model PeopleViewModel
 @{
     ViewBag.Title = "jQuery AJAX";
-    var ajaxOptions = new AjaxOptions
-    {
-        Url = Url.Action("Json"),
-        OnSuccess = "processData"
-    };
-
 }
 
 <h2>jQuery AJAX</h2>
@@ -22,22 +16,16 @@
     <tbody id="tableBody"></tbody>
 </table>
 
-@* TODO: Remove Ajax helper
-    - This needs tidying up.  Perhaps split out into jQuery with AJAX helpers and pure jQuery?
-*@
-@using (Ajax.BeginForm("Json", ajaxOptions))
-{
-    <div>
-        @Html.DropDownList("selectedRole", new SelectList(Model.Roles)))
-        <button type="submit" class="btn btn-primary">Submit</button>
-    </div>
-}
+<div>
+    @Html.DropDownList("selectedRole", new SelectList(Model.Roles))
+    <button type="submit" class="btn btn-primary">Submit</button>
+</div>
 
-<ul>
+<ul id="filterList">
     @foreach (string role in Model.Roles)
     {
         <li>
-            @Ajax.ActionLink(role, "Json", new { selectedRole = role }, ajaxOptions)
+            <a href="#">@role</a>
         </li>
     }
 </ul>
@@ -46,7 +34,7 @@
 {
     <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
     <script type="text/javascript">
-        function processData(data) {
+        var processData = function (data) {
             var target = $("#tableBody");
             target.empty();
             var tableBody = '';
@@ -55,16 +43,35 @@
                 tableBody = tableBody + "<tr><td>" + person.FirstName + "</td><td>" + person.LastName + "</td><td>" + person.Role + "</td></tr>";
             }
             target.append(tableBody);
-        }
+        };
 
-        $(function () {
-            @*var req = $.ajax({
+        var update = function (url) {
+            $.ajax({
                 type: "GET",
-                url: '@Url.Action("Json")'
+                url: url
             }).success(function (responseData) {
                 processData(responseData);
-            });*@
+            });
+        };
+
+        var submit = function () {
+            var url = getUrl($('select[name=selectedRole]').val());
+            update(url);
+        };
+
+        var filter = function (event) {
+            var role = event.target.text;
+            update(getUrl(role));
+        };
+
+        var getUrl = function (role) {
+            return '@Url.Action("Json")' + '?selectedRole=' + role
+        };
+
+        $(function () {
             processData(JSON.parse('@Html.Raw(@Model.PeopleJson)'));
+            $('button[type=submit]').click(submit);
+            $('#filterList').click(filter);
         });
     </script>
 }

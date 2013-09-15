@@ -3,6 +3,8 @@ MvcAsync
 
 MvcAsync is a project that investigates the myriad of ways that you can load data into an HTML page.  This includes both synchronous and asynchronous techniques.
 
+As this is an MVC project I am using techniques such as using razor to inject dynamically created JSON (People/Roles/etc) into the javascript.  This quite handy technique would not be available in pure HTML5 pages.
+
 Goals
 -----
 * **Minimal Requests:** This means that the data will always come down with the inital page load. This could the data could either be HTML or JSON.  In the case of JSON it is embedded in the page and then used to construct the HTML on the client.

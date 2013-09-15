@@ -1,5 +1,5 @@
 ﻿@using MvcAsync.Models
-@model RolesViewModel
+@model PeopleViewModel
 @{
     ViewBag.Title = "Knockout AJAX";
 }
@@ -23,9 +23,8 @@
 </table>
 
 <div>
-    <p>@Model.RolesJson</p>
     <select id="selectedRole" name="selectedRole" data-bind="options: roles, value: selectedRole"></select>
-    <button id="ajaxbutton" class="btn btn-primary" data-bind="click: submit">Submit</button>
+    <button class="btn btn-primary" data-bind="click: submit">Submit</button>
 </div>
 
 <div>
@@ -54,29 +53,32 @@
 
             // Operations
             self.submit = function () {
-                self.update(self.GetUrl(self.selectedRole()));
+                update(GetUrl(self.selectedRole()));
             };
 
             self.filter = function (data, event) {
-                self.update(self.GetUrl(event.target.text));
+                update(GetUrl(event.target.text));
             }
 
-            self.update = function (url) {
-                $.getJSON(url, function (allData) {
-                    var mappedPeople = $.map(allData, function (item) { return new Person(item) });
-                    self.people(mappedPeople);
-                });
+            // Helpers
+            var update = function (url) {
+                $.getJSON(url, processPeople);
             };
 
-            self.GetUrl = function (selectedRole) {
+            var GetUrl = function (selectedRole) {
                 return self.dataUrl + '?selectedRole=' + selectedRole;
             }
 
-            self.init = function () {
-                self.submit();
+            var processPeople = function(data) {
+                var mappedPeople = $.map(data, function (item) { return new Person(item) });
+                self.people(mappedPeople);
             }
 
-            self.init();
+            var init = function () {
+                processPeople(JSON.parse('@Html.Raw(Model.PeopleJson)'));
+            }
+
+            init();
         }
 
         ko.applyBindings(new PeopleViewModel());
