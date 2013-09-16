@@ -7,7 +7,7 @@ As this is an MVC project I am using techniques such as using razor to inject dy
 
 Goals
 -----
-* **Minimal Requests:** This means that the data will always come down with the inital page load. This could the data could either be HTML or JSON.  In the case of JSON it is embedded in the page and then used to construct the HTML on the client.
+* **Minimal Requests:** This means that the data will always come down with the inital page load. The data could either be HTML or JSON.  In the case of JSON it is embedded in the page and then used to construct the HTML on the client.
 * **Logic-less Views:** This means that any calculations are done in C# and store in ViewModels.  These ViewModels are then bound to the views (server-side) to produce the initial HTML.
 * **Like-for-like comparison:** Every technique should be functionality equivalent .
 
