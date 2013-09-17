@@ -12,10 +12,7 @@ namespace MvcAsync.Models
 
         public string RolesJson
         {
-            get
-            {
-                return JsonConvert.SerializeObject(Roles);
-            }
+            get { return JsonConvert.SerializeObject(Roles); }
         }
 
         public string SelectedRole { get; set; }
@@ -30,10 +27,7 @@ namespace MvcAsync.Models
 
         public string RolesJson
         {
-            get
-            {
-                return JsonConvert.SerializeObject(Roles);
-            }
+            get { return JsonConvert.SerializeObject(Roles); }
         }
 
         public string JsonDataUrl { get; set; }

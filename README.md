@@ -39,24 +39,43 @@ Techniques
 - Simple to implement
 
 *cons*
+
 - Server sends HTML.  More data sent than needed.
+
+###Unobtrusive AJAX with jQuery
+ 
+*pros*
+
+*cons*
 
 ###jQuery
 *pros*
 
 *cons*
+
 ###Knockout
 *pros*
 
+- Mature library with great documentation, tutorials, and examples
+
 *cons*
+
 ###Handlebars
 *pros*
 
+- Can be used for client-side and server-side rendering.
+
 *cons*
+
+- No support for event handling
+
 ###Angular
 *pros*
 
 *cons*
+
+- Steep learning curve
+- Issues with using jQuery for ajax calls.  Need to use $http instead.
 
 Summary
 -------

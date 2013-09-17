@@ -31,10 +31,11 @@
 
     <div>
         <ul ng-repeat="role in roles">
-            <li><a href="#" ng-click="filter()">{{role}}</a></li>
+            <li><a href="#" ng-click="filter($event)">{{role}}</a></li>
         </ul>
     </div>
 </div>
+
 @section Scripts
 {
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script>
@@ -56,8 +57,8 @@
                 update(GetUrl($scope.selectedRole));
             };
 
-            $scope.filter = function (data, event) {
-                update(GetUrl(event.target.text));
+            $scope.filter = function ($event) {
+                update(GetUrl($event.target.text));
             }
 
             var dataUrl = '@Model.JsonDataUrl';
