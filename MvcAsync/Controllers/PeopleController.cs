@@ -49,9 +49,9 @@ namespace MvcAsync.Controllers
             return View(GetPeopleVm(selectedRole));
         }
 
-        public ActionResult Angular()
+        public ActionResult Angular(string selectedRole = "All")
         {
-            return View();
+            return View(GetPeopleVm(selectedRole));
         }
 
         public JsonResult Json(string selectedRole = "All")

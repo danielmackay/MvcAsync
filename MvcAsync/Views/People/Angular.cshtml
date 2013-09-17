@@ -1,6 +1,88 @@
-﻿@{
-    Layout = "~/Views/Shared/_Layout.cshtml";
+﻿@using MvcAsync.Models
+@model PeopleViewModel
+@{
+    ViewBag.Title = "Angular";
+    ViewBag.App = "ng-app";
 }
 
-<h2>Angular</h2>
+<h2>Angular AJAX</h2>
+<div ng-controller="AngularCtrl">
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th>First</th>
+                <th>Last</th>
+                <th>Role</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="person in people">
+                <td>{{person.firstName}}</td>
+                <td>{{person.lastName}}</td>
+                <td>{{person.role}}</td>
+            </tr>
+        </tbody>
+    </table>
 
+    <div>
+        <select id="selectedRole" name="selectedRole" ng-model="selectedRole" ng-options="item for item in roles"></select>
+        <button class="btn btn-primary" ng-click="submit()">Submit</button>
+    </div>
+
+    <div>
+        <ul ng-repeat="role in roles">
+            <li><a href="#" ng-click="filter()">{{role}}</a></li>
+        </ul>
+    </div>
+</div>
+@section Scripts
+{
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script>
+
+    <script type="text/javascript">
+        function Person(data) {
+            this.firstName = data.FirstName;
+            this.lastName = data.LastName;
+            this.role = data.Role;
+        }
+
+        function AngularCtrl($scope, $http) {
+            $scope.roles = JSON.parse('@Html.Raw(Model.RolesJson)');
+            $scope.selectedRole = $scope.roles[0];
+            $scope.people = [];
+
+            // Operations
+            $scope.submit = function () {
+                update(GetUrl($scope.selectedRole));
+            };
+
+            $scope.filter = function (data, event) {
+                update(GetUrl(event.target.text));
+            }
+
+            var dataUrl = '@Model.JsonDataUrl';
+
+            // Helpers
+            var update = function (url) {
+                $http.get(url).success(function (data, status) {
+                    processPeople(data);
+                });
+            };
+
+            var GetUrl = function (selectedRole) {
+                return dataUrl + '?selectedRole=' + selectedRole;
+            }
+
+            var processPeople = function (data) {
+                $scope.people.length = 0;
+                angular.forEach(data, function (item) { $scope.people.push(new Person(item)) });
+            }
+
+            var init = function () {
+                processPeople(JSON.parse('@Html.Raw(Model.PeopleJson)'));
+            }
+
+            init();
+        }
+    </script>
+}
