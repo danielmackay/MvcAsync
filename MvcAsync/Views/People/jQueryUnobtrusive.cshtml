@@ -24,7 +24,7 @@
 @using (Ajax.BeginForm("Json", ajaxOptions))
 {
     <div>
-        @Html.DropDownList("selectedRole", new SelectList(Model.Roles)))
+        @Html.DropDownList("selectedRole", new SelectList(Model.Roles))
         <button type="submit" class="btn btn-primary">Submit</button>
     </div>
 }
