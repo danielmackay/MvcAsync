@@ -115,7 +115,7 @@ is the first templating/data-binding language looked at, but this requires heavy
 Knockout is a data-binding framework with a clean seperation of data and presentation which is easy to use.  Angular is an MVC framework that
 provides more than just data-binding.  This is the best for large scale javascript applications, but has a steep learning curve.
 
-In summary, if you had a slider to control easy and speed vs efficiency and scalability for the better techniques above it would look something like:
+In summary, if you had a slider to control easy and speed of development vs efficiency and scalability for the better techniques above it would look something like:
 
 1. Synchronous HTML
 2. Unobtrusive AJAX
