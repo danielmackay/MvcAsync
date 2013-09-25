@@ -13,8 +13,7 @@
             <th>Role</th>
         </tr>
     </thead>
-    <tbody id="peopleTable">
-    </tbody>
+    <tbody id="peopleTable"></tbody>
 </table>
 
 <div>
@@ -25,8 +24,6 @@
 <div>
     <ul id="roleLinks"></ul>
 </div>
-
-@*TODO: Get ajax working for submit button and links.  Remove uneeded functtions from VM and tidy up*@
 
 @section Scripts
 {
@@ -73,17 +70,24 @@
             var self = this;
             self.people = [];
             self.roles = JSON.parse('@Html.Raw(Model.RolesJson)');
-            self.selectedRole = self.roles[0];
             self.dataUrl = '@Model.JsonDataUrl';
 
             // Operations
             self.submit = function () {
-                update(GetUrl(self.selectedRole));
+                update(GetUrl($('#selectedRole').val()));
             };
 
-            self.filter = function (data, event) {
+            self.filter = function (event) {
                 update(GetUrl(event.target.text));
             }
+
+            self.RenderRoles = function () {
+                $('#selectedRole').html(selectedRoleTemplate(self));
+            };
+
+            self.RenderRoleLinks = function () {
+                $('#roleLinks').html(roleLinksTemplate(self));
+            };
 
             // Helpers
             var update = function (url) {
@@ -97,19 +101,24 @@
             var processPeople = function (data) {
                 var mappedPeople = $.map(data, function (item) { return new Person(item) });
                 self.people = mappedPeople;
+                $('#peopleTable').html(peopleTemplate(self));
             }
 
             var init = function () {
                 processPeople(JSON.parse('@Html.Raw(Model.PeopleJson)'));
+                self.RenderRoles();
+                self.RenderRoleLinks();
             }
 
             init();
         };
 
         var vm = new PeopleViewModel();
-        $('#roleLinks').html(roleLinksTemplate(vm));
-        $('#selectedRole').html(selectedRoleTemplate(vm));
-        $('#peopleTable').html(peopleTemplate(vm));
+        $('button').click(vm.submit);
+        $('#roleLinks').click(function (event) {
+            vm.filter(event);
+        });
+
 
     </script>
 }
