@@ -25,7 +25,9 @@
     </table>
 
     <div>
-        <select id="selectedRole" name="selectedRole" ng-model="selectedRole" ng-options="item for item in roles"></select>
+        <select id="selectedRole" name="selectedRole" ng-model="selectedRole">
+            <option ng-repeat="item in roles>{{item}}</option>
+        </select>
         <button class="btn btn-primary" ng-click="submit()">Submit</button>
     </div>
 
