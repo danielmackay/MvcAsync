@@ -8,8 +8,12 @@ As this is an MVC project I am using techniques such as using razor to inject dy
 Goals
 -----
 * **Minimal Requests:** This means that the data will always come down with the inital page load. The data could either be HTML or JSON.  In the case of JSON it is embedded in the page and then used to construct the HTML on the client.
-* **Logic-less Views:** This means that any calculations are done in C# or JS and store in ViewModels.  These ViewModels are then bound to the views (server-side) to produce the initial HTML.
-* **Like-for-like comparison:** Every technique should be functionality equivalent .
+* **Logic-less Views:** This means that any calculations are done in C# or JS and store in ViewModels.  These ViewModels are then bound to the views (server-side) to produce the initial HTML.  The exceptions are simple loops and if statements.
+* **Like-for-like comparison:** Every technique should be functionality equivalent. e.g:
+ 1. Full table should be initally loaded
+ 2. Filter via drop-down
+ 3. Quick filter links
+
 
 Project Setup
 -------------
@@ -28,7 +32,7 @@ Techniques
 *cons*
 
 - Most data sent over wire.
-- Entire page has to reload which blocks the user from doing anything else.
+- Entire page has to reload which blocks the user from doing anything else.  This also causes any un-cached resources to be loaded too.
 - Slowest
 
 ###Unobtrusive AJAX
@@ -41,14 +45,14 @@ Techniques
 *cons*
 
 - Server sends HTML.  More data sent than needed.
-- Couples presentation with data.  Restricts data from being re-used
+- Couples presentation with data.  Restricts data from being re-used.
 
 ###Unobtrusive AJAX with jQuery
 *pros*
 
-- Only JSON data sent over the wire
+- Only JSON data sent over the wire.  This makes the payload as small as possible.
 - Easy to implement
-- Good for simple scenarios
+- Quick win for simple scenarios
 
 *cons*
 
@@ -57,17 +61,17 @@ Techniques
 ###jQuery
 *pros*
 
-- Only JSON data sent over the wire
+- Only JSON data sent over the wire.  This makes the payload as small as possible.
 - Not tied to MVC architecture as much (although razor helpers are still used)
 
 *cons*
-- Heavy javascript needed
+- Heavy javascript needed.
 - Dynamically constructed HTML does not scale well for complicated markup.
 
 ###Handlebars
 *pros*
 
-- Only JSON data sent over the wire
+- Only JSON data sent over the wire.  This makes the payload as small as possible.
 - Clean seperation of data and presentation
 - Can be used for client-side and server-side rendering.
 - Re-usable separate templates
@@ -80,7 +84,7 @@ Techniques
 ###Knockout
 *pros*
 
-- Only JSON data sent over the wire
+- Only JSON data sent over the wire.  This makes the payload as small as possible.
 - Clean seperation of data and presentation
 - Mature library with great documentation, tutorials, and examples
 - Support for events
@@ -92,7 +96,7 @@ Techniques
 ###Angular
 *pros*
 
-- Only JSON data sent over the wire
+- Only JSON data sent over the wire.  This makes the payload as small as possible.
 - Clean seperation of data and presentation
 - Support for events
 - Re-usable directives
