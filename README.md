@@ -1,7 +1,7 @@
 MvcAsync
 ========
 
-MvcAsync is a project that investigates the myriad of ways that you can load data into an HTML page.  This includes both synchronous and asynchronous techniques.
+MvcAsync is a project that investigates the myriad of ways that you can load data into an HTML page.  This includes both synchronous and asynchronous techniques.  For the asynchronous techniques we then look at how we can update the DOM once we have the data.  For this we explore such data-binding libraries as Angulary, Knockout, and Handlebars.
 
 As this is an MVC project I am using techniques such as using razor to inject dynamically created JSON (People/Roles/etc) into the javascript.  This quite handy technique would not be available in pure HTML5 pages.
 
